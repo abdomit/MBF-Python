@@ -123,7 +123,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Read memory buffer.")
     parser.add_argument("-c", default=None, type=int, help="Channel number", dest="channel")
     parser.add_argument("-d", default="SR-TMBF", type=str, help="TMBF device name", dest="device_name")
-    parser.add_argument("-t", default=None, type=float, help="Frequency for domodyne detection (in SR turns units)", dest="tune")
+    parser.add_argument("-t", default=None, type=float, help="Frequency for homodyne detection (in SR turns units)", dest="tune")
     args = parser.parse_args()
     
     device_name = args.device_name
