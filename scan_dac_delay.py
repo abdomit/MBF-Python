@@ -65,7 +65,7 @@ caput(pv_base+':TRG:MEM:MODE_S', 0)
 bunch_nb = caget(pv_base+':BUNCHES')
 caput(pv_base+':DLY:DAC:RESET_S', 0)
 
-mbf = MBF_mem('SR-TMBF')
+mbf = MBF_mem(pv_base)
 
 axis = caget(pv_base+':AXIS{}'.format(int(channel)))
 bunches_i = arange(bunch, bunch+BUNCH_NB_SCAN)%bunch_nb
