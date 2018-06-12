@@ -52,7 +52,7 @@ Typical usage is to adjust DAC delay. For that purpose the NCO has to be enabled
 
 ### [mbf_memory.py](https://github.com/abdomit/MBF-Python/blob/master/mbf_memory.py "mbf_memory.py")
 
-```Shell
+```
 usage: mbf_memory.py [-h] [-c CHANNEL] [-d DEVICE_NAME] [-t TUNE]
 
 Read memory buffer.
