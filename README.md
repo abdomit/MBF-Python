@@ -6,14 +6,14 @@ A set of Python scripts in order to work with [DLS-MBF](https://github.com/DLS-C
 
 A small description of every script is available with:
 
-```Shell
+```
  script_name.py -h
 ```
 ## Scripts
 
 ### [plot_bunch_ampl.py](https://github.com/abdomit/MBF-Python/blob/master/plot_bunch_ampl.py "plot_bunch_ampl.py")
 
-```Shell
+```
 usage: plot_bunch_ampl.py [-h] [-c CHANNEL] [-d DEVICE_NAME]
 
 Show beam motion at NCO frequency.
@@ -28,11 +28,11 @@ This script will display a live graph showing beam motion amplitude for every bu
 
 The displayed bunch motion is phase sensitive: the bunch will highest oscillation amplitude is use as a reference with phase set to 0. The phase of the other bunches will be relative to this reference bunch, but also takes into account the phase different of NCO signal for different bunches.
 
-A possible application is the following: one wants to adjust DAC FIR. For that purpose the NCO has to be enabled to excite a *single* bunch at its betatron oscillation frequency. The script will be use to measure how much neighbor bunches oscillates, and adjust DAC FIR to lower it. For this measurement one has to use the lower possible NCO frequency, ideally mode 0.
+A possible application is the following: one wants to adjust DAC FIR. For that purpose the NCO has to be enabled to excite a *single* bunch at its betatron oscillation frequency. The script will be used to measure how much neighbor bunches oscillates, and adjust DAC FIR to lower it. For this measurement one has to use the lower possible NCO frequency, ideally mode 0.
 
 ### [scan_dac_delay.py](https://github.com/abdomit/MBF-Python/blob/master/scan_dac_delay.py "scan_dac_delay.py")
 
-```Shell
+```
 usage: scan_dac_delay.py [-h] [-b BUNCH] [-c CHANNEL] [-d DEVICE_NAME]
                          [-s SCAN_STEP]
 
