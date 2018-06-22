@@ -21,6 +21,8 @@ class DataAcquisition(Thread):
         self.trigger_cdt = Condition(mem_trig_request_lock)
         self.device = device
         self.axis = catools.caget(device+':AXIS{}'.format(int(channel)))
+        # Set runout to 12.5 %
+        catools.caput(device+':MEM:RUNOUT_S', 0, wait=True)
         self.new_data = 0
         self.stop = 0
         self.do_reset_axis()
@@ -130,8 +132,9 @@ if __name__ == '__main__':
     
     # Start plotting data
     ani = animation.FuncAnimation(fig, animate, interval=100, fargs=(ax1, thread_1))
-    show()
-    
-    # Figure has been closed: we stop thread_1 and exit
-    thread_1.stop = 1
-    thread_1.join()
+    try:
+        show()
+    finally:
+        # Figure has been closed: we stop thread_1 and exit
+        thread_1.stop = 1
+        thread_1.join()

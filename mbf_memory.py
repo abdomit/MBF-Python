@@ -54,7 +54,7 @@ class MBF_mem():
 
     def read_mem(self, count, offset=0, channel=None, bunch=None,
             decimation=None, tune=None, verbose=False):
-        cmd_str = "M{}O{}".format(count, int(offset))
+        cmd_str = "M{}O{}".format(int(count), int(offset))
         expected_msg_len = count
         msg_fmt = 'int16'
 
