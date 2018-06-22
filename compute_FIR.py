@@ -63,7 +63,8 @@ def deconvolution_fir(Beam_resp, x_max, n_max):
     return FIR(fir, Beam_resp.delay)
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description="Compute the correct DAC FIR.")
+    parser = argparse.ArgumentParser(description="Compute a suitable ADC or \
+            DAC FIR in order to cope for the system's imperfections.")
     parser.add_argument("-n", default=0, type=int,
         help="desired FIR delay", dest="fir_delay")
     parser.add_argument("-d", default="SR-TMBF", type=str,

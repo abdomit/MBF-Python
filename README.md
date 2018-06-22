@@ -63,7 +63,8 @@ usage: compute_FIR.py [-h] [-n FIR_DELAY] [-d DEVICE] [-f CUR_FIR_DELAY]
                       [-b BUNCH] [-r]
                       axis fir_type
 
-Compute the correct DAC FIR.
+Compute a suitable ADC or DAC FIR in order to cope for the system's
+imperfections.
 
 positional arguments:
   axis              MBF axis (usually X or Y)
