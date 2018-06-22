@@ -33,7 +33,7 @@ It will adjust DAC delay by automatically add 2.
 
 5) You can do one more iteration:
 ```
-./compute_FIR.py -n 3 -f 3 Y DAC
+./compute_FIR.py -n 2 -f 2 Y ADC
 ```
 
 6) Remove 2 to the turn clock delay.
@@ -44,7 +44,7 @@ Now we need to address one bunch with the NCO, with many bunches around (uniform
 
 8) Compute DAC FIR with:
 ```
-./compute_FIR.py -n 2 Y DAC
+./compute_FIR.py -n 3 Y DAC
 ```
 
 9) You can do one more iteration:
