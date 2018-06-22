@@ -80,10 +80,6 @@ optional arguments:
 
 This script compute ADC and DAC FIR to correct for the imperfection of the RF Front-end and Back-end. See instructions above.
 
-#### ADC FIR
-
-
-
 ### [plot_bunch_ampl.py](https://github.com/abdomit/MBF-Python/blob/master/plot_bunch_ampl.py "plot_bunch_ampl.py")
 
 ```
