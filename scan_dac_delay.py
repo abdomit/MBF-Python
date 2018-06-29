@@ -8,32 +8,11 @@ from cothread.catools import *
 from cothread import Sleep
 import argparse
 from mbf_memory import MBF_mem
+from common import printProgressBar
 
 STEP_NB = 8
 FDLY_NB = 24
 BUNCH_NB_SCAN = 4
-
-# Print iterations progress
-def printProgressBar (iteration, total, prefix = '', suffix = '', decimals = 1, length = 100, fill = '█'):
-    """
-    Call in a loop to create terminal progress bar
-    @params:
-        iteration   - Required  : current iteration (Int)
-        total       - Required  : total iterations (Int)
-        prefix      - Optional  : prefix string (Str)
-        suffix      - Optional  : suffix string (Str)
-        decimals    - Optional  : positive number of decimals in percent complete (Int)
-        length      - Optional  : character length of bar (Int)
-        fill        - Optional  : bar fill character (Str)
-    """
-    percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
-    filledLength = int(length * iteration // total)
-    bar = fill * filledLength + '-' * (length - filledLength)
-    print '\r%s |%s| %s%% %s\r' % (prefix, bar, percent, suffix),
-    # Print New Line on Complete
-    if iteration == total: 
-        print "\n",
-    sys.stdout.flush()
 
 
 parser = argparse.ArgumentParser(description="Scan DAC Delay and plot bunches motion.")
