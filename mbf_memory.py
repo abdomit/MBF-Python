@@ -4,7 +4,6 @@
 import numpy as np
 import argparse
 import socket
-from time import time
 
 class MBF_mem():
     BUFFER_SIZE = 1024
@@ -61,19 +60,19 @@ Example     :
         max_turn = np.floor((runout*2.**29)/self.bunch_nb)
         return min_turn, max_turn
     
-    def get_count_max(self, decimation):
-        return ((2**29)//self.bunch_nb)//decimation
+    def get_turns_max(self, decimate):
+        return ((2**29)//self.bunch_nb)//decimate
     
-    def get_max_decimation(self):
+    def get_max_decimate(self):
         READ_BUFFER_BYTES = 2**20-64
         sizeof_uint32 = 4
         buffer_size = READ_BUFFER_BYTES  / sizeof_uint32 - self.bunch_nb
         return int(np.ceil((1.*buffer_size) / self.bunch_nb) - 1)
 
-    def read_mem_avg(self, count, offset=0, channel=None, decimation=None,
+    def read_mem_avg(self, turns, offset=0, channel=None, decimate=None,
             tune=None, verbose=False):
-        d = self.read_mem(count, offset=offset, channel=channel,
-            decimation=decimation, tune=tune, verbose=verbose)
+        d = self.read_mem(turns, offset=offset, channel=channel,
+            decimate=decimate, tune=tune, verbose=verbose)
         n = np.size(d)
         out_buffer_size = self.bunch_nb
         if channel is None:
@@ -103,10 +102,10 @@ Example     :
         dt = dt.newbyteorder('<')
         return dt
 
-    def read_mem(self, count, offset=0, channel=None, bunch=None,
-            decimation=None, tune=None, timeout=None, verbose=False):
-        cmd_str = "M{}O{}".format(int(count), int(offset))
-        expected_msg_len = count
+    def read_mem(self, turns, offset=0, channel=None, bunch=None,
+            decimate=None, tune=None, lock=None, verbose=False):
+        cmd_str = "M{}O{}".format(int(turns), int(offset))
+        expected_msg_len = turns
         msg_fmt = 'int16'
 
         if channel is not None:
@@ -124,29 +123,25 @@ Example     :
         else:
             expected_msg_len *= self.bunch_nb
 
-        if decimation is not None:
-            if (int(decimation) < 1) or \
-                    (int(decimation) > self.get_max_decimation()):
-                raise ValueError("decimation should be between 1 and {}".\
-                                format(self.get_max_decimation()))
-            cmd_str += "D{}".format(int(decimation))
+        if decimate is not None:
+            if (int(decimate) < 1) or \
+                    (int(decimate) > self.get_max_decimate()):
+                raise ValueError("decimate should be between 1 and {}".\
+                                format(self.get_max_decimate()))
+            cmd_str += "D{}".format(int(decimate))
             msg_fmt = 'float32'
 
         if tune is not None:
             cmd_str += "T{}".format(float(tune))
             msg_fmt = 'complex64'
 
-        if msg_fmt == 'int16':
-            expected_msg_len *= 2
-        elif msg_fmt == 'float32':
-            expected_msg_len *= 4
-        elif msg_fmt == 'complex64':
-            expected_msg_len *= 8
+        out_type = np.__dict__[type_str]
+        expected_msg_len *= np.dtype(out_type).itemsize
 
-        if timeout is not None:
+        if lock is not None:
             cmd_str += "L"
-            if timeout > 0:
-                cmd_str += "W{:.0f}".format(timeout*1000)
+            if lock > 0:
+                cmd_str += "W{:.0f}".format(lock*1000)
         
         if verbose:
             print "cmd_str:", cmd_str, " | ", expected_msg_len
@@ -165,7 +160,7 @@ Example     :
 
         return d
 
-    def read_det(self, channel=0, timeout=None, verbose=False):
+    def read_det(self, channel=0, lock=None, verbose=False):
         """
 Reads out the currently captured detectors for the given axis.  If no axis is
 specified, the default is 0.
@@ -175,9 +170,9 @@ Parameters
 channel : int
     Channel number (0 or 1).
 
-timeout : float or None
+lock : float or None
     Locks the detector readout channel and throws an error after
-    timeout seconds if the channel cannot be locked.
+    lock seconds if the channel cannot be locked.
     If None, doesn't try to lock the channel.
 
 verbose : bool
@@ -202,10 +197,10 @@ NameError
         if channel not in [0, 1]:
             raise ValueError("channel should be: None, 0 or 1")
         cmd_str = "D{}FST".format(int(channel))
-        if timeout is not None:
+        if lock is not None:
             cmd_str += "L"
-            if timeout > 0:
-                cmd_str += "W{:.0f}".format(timeout*1000)
+            if lock > 0:
+                cmd_str += "W{:.0f}".format(lock*1000)
         
         if verbose:
             print "cmd_str:", cmd_str
@@ -283,10 +278,10 @@ if __name__ == '__main__':
     mbf = MBF_mem(device_name, layer=layer)
 
     bunch = None
-    decimation = mbf.get_max_decimation()
-    count = mbf.get_count_max(decimation)
+    decimate = mbf.get_max_decimate()
+    turns = mbf.get_turns_max(decimate)
     min_turn, _ = mbf.get_turn_min_max()
     offset = min_turn
 
-    data = mbf.read_mem(count, offset, channel, bunch, decimation, tune)
+    data = mbf.read_mem(turns, offset, channel, bunch, decimate, tune)
     print data
